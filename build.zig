@@ -33,6 +33,7 @@ pub fn build(b: *std.Build) !void {
                     .root_source_file = .{ .path = filename },
                     .target = target,
                     .optimize = optimize,
+                    .main_pkg_path = std.Build.LazyPath.relative("."),
                 });
 
                 b.installArtifact(exe);

@@ -18,6 +18,8 @@ pub fn main() !void {
     defer elves.deinit();
 
     while (it.next()) |snacks| {
+        if (snacks.len == 0) continue;
+
         var snacks_it = std.mem.splitScalar(u8, snacks, '\n');
 
         var sum: u32 = 0;
