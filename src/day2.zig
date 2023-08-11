@@ -96,7 +96,7 @@ pub fn main() !void {
 
         var score1: u32 = 0;
         var score2: u32 = 0;
-        inline while (game_it.next()) |game| {
+        while (game_it.next()) |game| {
             if (game.len == 0) continue;
 
             var choice_it = std.mem.splitScalar(u8, game, ' ');
