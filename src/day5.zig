@@ -18,8 +18,8 @@ fn stackCount(crates_input: []const u8) usize {
 
 fn initStacks(crates_input: []const u8, count: usize) !Stacks {
     var stacks = try Stacks.init(count);
-    for (&stacks.buffer) |*stack| {
-        stack.* = try std.BoundedArray(u8, 64).init(0);
+    for (0..count) |i| {
+        stacks.set(i, try std.BoundedArray(u8, 64).init(0));
     }
 
     var lines = std.mem.splitBackwardsScalar(u8, crates_input, '\n');
@@ -29,7 +29,7 @@ fn initStacks(crates_input: []const u8, count: usize) !Stacks {
         var i: u32 = 1;
         while (i < line.len) : (i += 4) {
             if (std.ascii.isAlphabetic(line[i])) {
-                try stacks.buffer[i / 4].append(line[i]);
+                try stacks.slice()[i / 4].append(line[i]);
             }
         }
     }
@@ -75,17 +75,17 @@ fn initMoves(moves_input: []const u8, allocator: std.mem.Allocator) !std.ArrayLi
 
 fn processMove(stacks: *Stacks, move: Move) !void {
     for (0..move.count) |_| {
-        const letter = stacks.buffer[move.src].pop();
-        try stacks.buffer[move.dst].append(letter);
+        const letter = stacks.slice()[move.src].pop();
+        try stacks.slice()[move.dst].append(letter);
     }
 }
 
 fn processMove1(stacks: *Stacks, move: Move) !void {
-    const boxes = stacks.buffer[move.src].constSlice();
-    const len = stacks.buffer[move.src].len;
+    const boxes = stacks.constSlice()[move.src].constSlice();
+    const len = stacks.constSlice()[move.src].len;
     const slice = boxes[len - move.count ..];
-    try stacks.buffer[move.dst].appendSlice(slice);
-    try stacks.buffer[move.src].resize(len - slice.len);
+    try stacks.slice()[move.dst].appendSlice(slice);
+    try stacks.slice()[move.src].resize(len - slice.len);
 }
 
 pub fn main() !void {

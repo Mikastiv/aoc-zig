@@ -20,7 +20,7 @@ fn maskToChar(idx: u64) u8 {
     };
 }
 
-fn findUnique(a: []const u8, b: []const u8) ?u8 {
+fn findCommon(a: []const u8, b: []const u8) ?u8 {
     var letters: u64 = 0;
 
     for (a) |c| {
@@ -37,7 +37,7 @@ fn findUnique(a: []const u8, b: []const u8) ?u8 {
     return null;
 }
 
-fn findUnique3(a: []const u8, b: []const u8, c: []const u8) u8 {
+fn findCommon3(a: []const u8, b: []const u8, c: []const u8) u8 {
     var letters1: u64 = 0;
     var letters2: u64 = 0;
     var letters3: u64 = 0;
@@ -55,9 +55,9 @@ fn findUnique3(a: []const u8, b: []const u8, c: []const u8) u8 {
     }
 
     const idx = letters1 & letters2 & letters3;
-    const unique = maskToChar(idx);
+    const common = maskToChar(idx);
 
-    return unique;
+    return common;
 }
 
 pub fn main() !void {
@@ -70,8 +70,8 @@ pub fn main() !void {
         const sack1 = line[0 .. line.len / 2];
         const sack2 = line[line.len / 2 ..];
 
-        const unique = findUnique(sack1, sack2);
-        if (unique) |u| {
+        const common = findCommon(sack1, sack2);
+        if (common) |u| {
             sum += index(u);
         }
     }
@@ -87,8 +87,8 @@ pub fn main() !void {
         const elf2 = lines.next().?;
         const elf3 = lines.next().?;
 
-        const unique = findUnique3(elf1, elf2, elf3);
-        sum += index(unique);
+        const common = findCommon3(elf1, elf2, elf3);
+        sum += index(common);
     }
 
     std.debug.print("part 2 - {d}\n", .{sum});
