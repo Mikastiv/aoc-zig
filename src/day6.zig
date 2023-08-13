@@ -25,13 +25,13 @@ fn isUnique(slice: []const u8) bool {
     return true;
 }
 
-fn markerPosition(data: []const u8, comptime uniqueCount: u32) usize {
+fn markerPosition(data: []const u8, comptime uniqueCount: u32) ?usize {
     var start: u32 = 0;
     while (start < data.len - uniqueCount) : (start += 1) {
         const slice = data[start .. start + uniqueCount];
         if (isUnique(slice)) return start + uniqueCount;
     }
-    return start;
+    return null;
 }
 
 pub fn main() !void {
@@ -41,6 +41,6 @@ pub fn main() !void {
     const index1 = markerPosition(line, 4);
     const index2 = markerPosition(line, 14);
 
-    std.debug.print("part 1 - {d}\n", .{index1});
-    std.debug.print("part 2 - {d}\n", .{index2});
+    std.debug.print("part 1 - {d}\n", .{index1.?});
+    std.debug.print("part 2 - {d}\n", .{index2.?});
 }
