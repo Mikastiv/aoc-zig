@@ -8,7 +8,7 @@
             "type": "cppvsdbg",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/zig-out/bin/day8",
+            "program": "${workspaceFolder}/zig-out/bin/day9",
             "args": [],
             "cwd": "${workspaceFolder}"
         }
