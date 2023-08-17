@@ -70,7 +70,7 @@ fn moveTail(tail: *Pos, delta: Vec) void {
     }
 }
 
-fn processMove(head: *Pos, tail: *Pos, dir: Dir, apply: bool) void {
+fn processMove(head: *Pos, tail: *Pos, dir: Dir, comptime apply: bool) void {
     if (apply) applyMove(head, dir);
     const delta = calculateDelta(head.*, tail.*);
     if (needsMove(delta)) {
@@ -89,7 +89,8 @@ pub fn main() !void {
     var seen1 = PosSet.init(alloc);
     var seen2 = PosSet.init(alloc);
 
-    var knots = try std.BoundedArray(Pos, 10).init(10);
+    const knot_count = 10;
+    var knots = try std.BoundedArray(Pos, knot_count).init(knot_count);
     for (knots.slice()) |*knot| {
         knot.* = .{ .x = 0, .y = 0 };
     }
@@ -99,7 +100,7 @@ pub fn main() !void {
     while (lines.next()) |line| {
         const move = try Move.fromString(line);
         for (0..move.amt) |_| {
-            for (0..knots.len - 1) |i| {
+            inline for (0..knot_count - 1) |i| {
                 processMove(&knots.slice()[i], &knots.slice()[i + 1], move.dir, i == 0);
             }
             try seen1.put(knots.get(1), {});
