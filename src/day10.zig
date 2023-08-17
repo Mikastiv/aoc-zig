@@ -77,19 +77,19 @@ pub fn main() !void {
     var cpu = Cpu{};
     var crt = try Crt.init();
     var sum: isize = 0;
-    var x: usize = 1;
-    var y: usize = 1;
+    var x: usize = 0;
+    var y: usize = 0;
     while (lines.next()) |line| {
         const inst = try Ins.fromString(line);
 
         for (0..inst.cycles()) |_| {
             if (cpu.isSignalCycle()) sum += cpu.signalStrength();
 
-            if (try shouldDraw(cpu.x, x - 1)) crt.putPixel(x - 1, y - 1);
+            if (try shouldDraw(cpu.x, x)) crt.putPixel(x, y);
 
             x += 1;
             if (@rem(cpu.cycle, 40) == 0) {
-                x = 1;
+                x = 0;
                 y += 1;
             }
 
